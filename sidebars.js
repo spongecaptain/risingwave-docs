@@ -171,6 +171,19 @@ const sidebars = {
         type: 'doc',
         id: 'sql/sql-data-types',
         label: 'Data types',
+      },
+      {
+        type: 'category',
+        label: 'Query Syntax',
+        items: 
+        [
+          {
+            type: 'doc',
+            id: 'sql/query-syntax/query-syntax-with-clause',
+            label: 'WITH',
+          },
+          
+        ]
       },  
       {
       type: 'category',
@@ -239,7 +252,7 @@ const sidebars = {
           },
         
         ]
-        },
+      },
       {
       type: 'category',
       label: 'Commands',
