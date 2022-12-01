@@ -23,10 +23,6 @@ Basic WHERE clause examples:
 SELECT *
 FROM table_name
 WHERE id=5;
--- select all rows that match the given case-insensitive LIKE expression
-SELECT *
-FROM table_name
-WHERE name ILIKE '%rise%';
 -- select all rows that match the given composite expression
 SELECT *
 FROM table_name
