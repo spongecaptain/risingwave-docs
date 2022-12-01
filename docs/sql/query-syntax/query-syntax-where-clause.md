@@ -1,5 +1,5 @@
 ---
-id: query-syntax-with-clause
+id: query-syntax-where-clause
 slug: /query-syntax-where-clause
 title: WHERE clause
 ---
