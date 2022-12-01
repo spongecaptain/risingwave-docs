@@ -179,6 +179,11 @@ const sidebars = {
         [
           {
             type: 'doc',
+            id: 'sql/query-syntax/query-syntax-where-clause',
+            label: 'WHERE',
+          },
+          {
+            type: 'doc',
             id: 'sql/query-syntax/query-syntax-with-clause',
             label: 'WITH',
           },
