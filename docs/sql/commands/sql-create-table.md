@@ -7,6 +7,22 @@ slug: /sql-create-table
 
 Use the `CREATE TABLE` command to create a new table.
 
+
+import Drawer from '@theme/Drawer';
+import {Diagram, Optional, NonTerminal, ZeroOrMore, Choice) from '@theme/RailroadDiagram'
+
+export const svg = new Diagram(new Terminal('CREATE TABLE'),
+  new Optional('IF NOT EXIST', 'skip'),
+  new Optional(new NonTerminal('schema-name.'), 'skip'),
+  new NonTerminal('table-name'),
+  new Choice(0,
+    new Sequence(new Terminal('AS'), new NonTerminal('select-node')),
+   new NonTerminal('escape')));
+
+<Drawer SVG={svg} />
+
+
+
 ## Syntax
 
 ```sql
