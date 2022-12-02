@@ -9,7 +9,7 @@ Use the `CREATE TABLE` command to create a new table.
 
 
 import Drawer from '@theme/Drawer';
-import {Diagram, Optional, Sequence, NonTerminal, ZeroOrMore, Choice} from '@theme/RailroadDiagram';
+import {Diagram, Optional, NonTerminal, ZeroOrMore, Choice} from '@theme/RailroadDiagram';
 
 export const svg = new Diagram(new Terminal('CREATE TABLE'),
   new Optional('IF NOT EXIST', 'skip'),
