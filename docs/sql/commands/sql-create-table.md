@@ -9,18 +9,33 @@ Use the `CREATE TABLE` command to create a new table.
 
 
 import Drawer from '@theme/Drawer';
-import {Diagram, Optional, Terminal, NonTerminal, ZeroOrMore, Choice} from '@theme/RailroadDiagram'
+import {Diagram, Stack, Sequence, Optional, Terminal, Comment, NonTerminal, ZeroOrMore, Choice} from '@theme/RailroadDiagram'
 
-export const svg = new Diagram(new Terminal('CREATE TABLE'),
-  new Optional('IF NOT EXIST', 'skip'),
-  new Optional(new NonTerminal('schema-name.'), 'skip'),
-  new NonTerminal('table-name'),
-  new Choice(0, new NonTerminal('abc'),
-   new NonTerminal('escape')));
+export const svg = new Diagram(
+    new Stack(
+        new Sequence(
+            new Terminal('CREATE TABLE'), 
+            new Optional('IF NOT EXIST', 'skip'), 
+            new Optional(
+                new Sequence(
+                    new Terminal('schema-name'), 
+                    new Terminal('.')), 'skip')), 
+        new Sequence(
+            new Terminal('table-name'), 
+            new Choice(0, 
+                new Terminal('a'),
+                new Sequence(
+                    new Terminal('AS'), 
+                    new Terminal('select-query'))))));
 
 <Drawer SVG={svg} />
 
-
+```js
+export const svg = new Diagram(new Stack(new Terminal('CREATE TABLE'),
+  new Optional('IF NOT EXIST', 'skip'),
+  new Optional(new Sequence(new Comment('schema-name'), new Comment('.')), 'skip'),
+  new Comment('table-name')));
+```
 
 ## Syntax
 
