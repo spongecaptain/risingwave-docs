@@ -184,6 +184,11 @@ const sidebars = {
         [
           {
             type: 'doc',
+            id: 'sql/query-syntax/query-syntax-group-by-clause',
+            label: 'GROUP BY',
+          },
+          {
+            type: 'doc',
             id: 'sql/query-syntax/query-syntax-where-clause',
             label: 'WHERE',
           },
