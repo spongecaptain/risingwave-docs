@@ -19,14 +19,23 @@ export const svg = new Diagram(
             new Optional(
                 new Sequence(
                     new Terminal('schema-name'), 
-                    new Terminal('.')), 'skip')), 
-        new Sequence(
+                    new Terminal('.')
+                    ), 
+                    'skip'),
             new Terminal('table-name'), 
-            new Choice(0, 
-                new Terminal('a'),
+                    ), 
+        new Sequence(
+            new Choice(0,
+                new Sequence(
+                    new Terminal('('),
+                    new Terminal ('column_name'),
+                    new Terminal ('data_type'),
+                    new ZeroOrMore (new Sequence ( new Terminal ('column_name'), new Terminal ('data_type')), ',')
+                ),
                 new Sequence(
                     new Terminal('AS'), 
-                    new Terminal('select-query'))))));
+                    new Terminal('select-query')))))
+                    );
 
 <Drawer SVG={svg} />
 
