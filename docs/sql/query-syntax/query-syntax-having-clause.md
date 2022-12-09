@@ -4,11 +4,11 @@ slug: /query-syntax-having-clause
 title: HAVING clause
 ---
 
-The HAVING clause is optional and eliminates group rows that do not satisfy a given condition. HAVING is similar to the WHERE clause, but WHERE occurs before the grouping, and HAVING occurs after. 
+The `HAVING` clause is optional and eliminates group rows that do not satisfy a given condition. `HAVING` is similar to the `WHERE` clause, but `WHERE` occurs before the grouping, and `HAVING` occurs after. 
 
-This means that the WHERE clause places conditions on selected columns, whereas the HAVING clause places conditions on groups created by the GROUP BY clause.
+This means that the `WHERE` clause places conditions on selected columns, whereas the `HAVING` clause places conditions on groups created by the GROUP BY clause.
 
-Here's an example showing the position of the HAVING clause in a SELECT query:
+Here's an example showing the position of the `HAVING` clause in a SELECT query:
 
 ```sql
 SELECT column1, column2
@@ -19,7 +19,7 @@ HAVING [ conditions ]
 ORDER BY column1, column2
 ```
 
-Basic HAVING clause examples:
+Basic `HAVING` clause example:
 
 ```sql
 -- count the number of entries in the "addresses" table that belong to each different city
@@ -28,10 +28,4 @@ SELECT city, COUNT(*)
 FROM addresses
 GROUP BY city
 HAVING COUNT(*) >= 40;
--- compute the average income per city per street_name
--- filtering out cities with an average income bigger than three times the median income
-SELECT city, street_name, AVG(income)
-FROM addresses
-GROUP BY city, street_name
-HAVING AVG(income) > 3 * MEDIAN(income);
 ```

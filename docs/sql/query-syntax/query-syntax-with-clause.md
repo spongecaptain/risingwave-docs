@@ -4,11 +4,11 @@ slug: /query-syntax-with-clause
 title: WITH clause
 ---
 
-The WITH clause provides a way to write supplemental statements for a larger query. These statements, also known as Common Table Expressions (i.e., CTEs), can be viewed as defining temporary tables that exist just for one query.
+The `WITH` clause provides a way to write supplemental statements for a larger query. These statements, also known as Common Table Expressions (i.e., CTEs), can be viewed as defining temporary tables that exist just for one query.
 
 It helps break down complicated and large queries into simpler, easily readable forms and proves especially useful when the subquery is executed multiple times. It computes the aggregation once and can then be repeatedly referenced by its name in the queries.
 
-Regular (non-recursive) common-table expressions are views limited in scope to a particular query. CTEs can reference each other and can be nested. The WITH clause must be defined before it's used in the query.
+Regular (non-recursive) common-table expressions are views limited in scope to a particular query. CTEs can reference each other and can be nested. The `WITH` clause must be defined before it's used in the query.
 
 
 Basic CTE examples:
