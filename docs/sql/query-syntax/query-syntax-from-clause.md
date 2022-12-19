@@ -37,7 +37,6 @@ Subqueries specifying a derived table must be enclosed in parentheses and must b
 Syntax:
 
 ```sql
--- create a CTE called "cte" and use it in the main query
 FROM (SELECT * FROM table1) AS alias_name
 ```
 
