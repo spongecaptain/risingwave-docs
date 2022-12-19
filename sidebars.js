@@ -179,13 +179,23 @@ const sidebars = {
         [
           {
             type: 'doc',
-            id: 'sql/query-syntax/query-syntax-having-clause',
-            label: 'HAVING',
+            id: 'sql/query-syntax/query-syntax-from-clause',
+            label: 'FROM',
           },
           {
             type: 'doc',
             id: 'sql/query-syntax/query-syntax-group-by-clause',
             label: 'GROUP BY',
+          },
+          {
+            type: 'doc',
+            id: 'sql/query-syntax/query-syntax-having-clause',
+            label: 'HAVING',
+          },
+          {
+            type: 'doc',
+            id: 'sql/query-syntax/query-syntax-limit-clause',
+            label: 'LIMIT',
           },
           {
             type: 'doc',
