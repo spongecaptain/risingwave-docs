@@ -63,6 +63,7 @@ All the fields listed below are required.
 |database.password| Password of the database. |
 |database.name| Name of the database. |
 |table.name| Name of the table that you want to ingest data from. |
+|server.id| A numeric ID of the database client. It must be unique across all database processes that are running in the MySQL cluster.|
 
 #### Formats
 
