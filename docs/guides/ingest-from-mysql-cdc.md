@@ -7,9 +7,7 @@ slug: /ingest-from-mysql-cdc
 
 Change Data Capture (CDC) refers to the process of identifying and capturing data changes in a database, then delivering the changes to a downstream service in real time.
 
-MySQL has a binary log (binlog) that records all operations in the order in which they are committed to the database. This includes changes to table schemas as well as changes to the data in tables. MySQL uses the binlog for replication and recovery.
-
-RisingWave supports ingesting row-level data (`INSERT`, `UPDATE`, and `DELETE` operations) from the binlog of a MySQL database.
+RisingWave supports ingesting row-level data (`INSERT`, `UPDATE`, and `DELETE` operations) from the changes of a MySQL database.
 
 ::: note
 
@@ -22,8 +20,8 @@ You can ingest CDC data from MySQL in two ways:
 - Using the direct MySQL CDC connector
   This connector is included in RisingWave. With this connector, RisingWave can connect to MySQL directly to obtain data from the binlog without starting additional services. Use this approach if Kafka is not part of your technical stack.
 
-- Using the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html)
-  You can use this connector to propogate data change events to Kafka topics, and then create a source in RisingWave to consume data from the Kafka topics. Us this approach is Kafka is part of your technical stack.
+- Using Debezium and Kafka
+  You can use the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html) to convert MySQL data changes to Kafka topics, and then use the Kafka connector in RisingWave to consume data from the Kafka topics. Us this approach is Kafka is part of your technical stack.
 
 
 ## Using the direct MySQL CDC connector
@@ -93,16 +91,15 @@ CREATE MATERIALIZED SOURCE orders (
 ) ROW FORMAT DEBEZIUM_JSON;
 ```
 
-## Debezium connector for MySQL
+## Debezium and Kafka
 
 ### Set up MySQL
 
 Before using the Debezium connector for MySQL, you need to complete several configurations on MySQL. For details, see [Setting up MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html#setting-up-mysql).
 
-### Deploy the MySQL connector
+### Deploy the Debezium connector for MySQL
 
-You need to download and configure the connector, and then add the configuration to your Kafka Connect cluster. For details, see [Deploying the MySQL connector](https://debezium.io/documentation/reference/stable/connectors/mysql.html#mysql-deploying-a-connector).
-
+You need to download and configure the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html), and then add the configuration to your Kafka Connect cluster. For details, see [Deploying the MySQL connector](https://debezium.io/documentation/reference/stable/connectors/mysql.html#mysql-deploying-a-connector).
 
 ### Create a materialized source connection using the Kafka connector
 
