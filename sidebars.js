@@ -96,12 +96,13 @@ const sidebars = {
       [
         {
           type: 'doc',
+          label: 'MySQL CDC',
          id: 'guides/ingest-from-mysql-cdc'
         }
       ]
     },
     {type: 'ref', 
-    label: 'Deliver data', 
+    label: 'Data delivery', 
     id: 'sql/commands/sql-create-sink'
     },
     {

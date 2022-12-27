@@ -11,6 +11,12 @@ MySQL has a binary log (binlog) that records all operations in the order in whic
 
 RisingWave supports ingesting row-level data (`INSERT`, `UPDATE`, and `DELETE` operations) from the binlog of a MySQL database.
 
+::: note
+
+The supported MySQL version are 5.7 and 8.0.x.
+
+:::
+
 You can ingest CDC data from MySQL in two ways:
 
 - Using the direct MySQL CDC connector
@@ -26,9 +32,9 @@ You can ingest CDC data from MySQL in two ways:
 
 Before using the MySQL CDC connector, you need to complete several configurations on MySQL. For details, see [Setting up MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html#setting-up-mysql).
 
-### Create a materialized source using the CDC connector
+### Create a materialized source connection using the CDC connector
 
-To ensure all data changes are captured, you need to create a materialized source in RisingWave using the direct CDC connector. Use the `CREATE MATERIALIZED SOURCE` command to create a materialized source. 
+To ensure all data changes are captured, you must create a materialized source connection (`CREATE MATERIALIZED SOURCE`) and specify primary keys. The data format must be Debezium JSON or Maxwell JSON.
 
 
 #### Syntax
@@ -40,15 +46,29 @@ CREATE MATERIALIZED SOURCE [ IF NOT EXISTS ] source_name (
 ) 
 WITH (
    connector='cdc',
-   database.hostname = '',
-   database.port = '',
-   database.user = '',
-   database.password = '',
-   database.name = '',
-   table.name = ''
+   <field>=<value>, ...
 ) 
 ROW FORMAT { DEBEZIUM_JSON | MAXWELL };
 ```
+
+#### WITH parameters
+
+All the fields listed below are required. 
+
+|Field|Notes|
+|---|---|
+|database.hostname| Host name of the database. |
+|database.port| Port number of the database.|
+|database.user| User name of the database.|
+|database.password| Password of the database. |
+|database.name| Name of the database. |
+|table.name| Name of the table that you want to ingest data from. |
+
+#### Formats
+
+- `DEBEZIUM_JSON` — [Debezium](https://debezium.io) is a log-based CDC tool that can capture row changes from various database management systems such as PostgreSQL, MySQL, and SQL Server and generate events with consistent structures. Supported serialization format: JSON.
+- `MAXWELL` — [Maxwell](https://maxwells-daemon.io) is a log-based CDC tool that can capture row changes from MySQL and write them as JSON to Kafka.
+
 
 #### Example
 
@@ -83,16 +103,9 @@ Before using the Debezium connector for MySQL, you need to complete several conf
 You need to download and configure the connector, and then add the configuration to your Kafka Connect cluster. For details, see [Deploying the MySQL connector](https://debezium.io/documentation/reference/stable/connectors/mysql.html#mysql-deploying-a-connector).
 
 
-### Create a materialized Kafka source
+### Create a materialized source connection using the Kafka connector
 
-To ensure all data changes are captured, you need to create a materialized source in RisingWave. Use the `CREATE MATERIALIZED SOURCE` command to create a materialized source for Kafka. 
-
-
-:::note
-
-Currently, RisingWave only supports materialized CDC sources with primary keys, and the data format must be Debezium JSON or Maxwell JSON.
-
-:::
+To ensure all data changes are captured, you must create a materialized source connection (`CREATE MATERIALIZED SOURCE`) and specify primary keys. The data format must be Debezium JSON or Maxwell JSON.
 
 #### Syntax
 
@@ -103,23 +116,23 @@ CREATE MATERIALIZED SOURCE [ IF NOT EXISTS ] source_name (
 ) 
 WITH (
    connector='kafka',
-   field_name='value', ...
+   <field>=<value>, ...
 ) 
 ROW FORMAT { DEBEZIUM_JSON | MAXWELL };
 ```
 
 
-#### Parameters
+#### WITH parameters
 
-|Field|	Required?| 	Notes|
-|---|---|---|
-|topic|Yes|Address of the Kafka topic. One source can only correspond to one topic.|
-|properties.bootstrap.server	|Yes|Address of the Kafka broker. Format: `'ip:port,ip:port'`.	|
-|properties.group.id	|Yes|Name of the Kafka consumer group	|
-|scan.startup.mode|No|The Kafka consumer starts consuming data from the commit offset. This includes two values: `'earliest'` and `'latest'`. If not specified, the default value `earliest` will be used.|
-|scan.startup.timestamp_millis|No|Specify the offset in milliseconds from a certain point of time.	|
+|Field|	Notes|
+|---|---|
+|topic| Required. Address of the Kafka topic. One source can only correspond to one topic.|
+|properties.bootstrap.server|Required. Address of the Kafka broker. Format: `'ip:port,ip:port'`.	|
+|properties.group.id	|Required. Name of the Kafka consumer group.	|
+|scan.startup.mode|Optional. The Kafka consumer starts consuming data from the commit offset. This includes two values: `'earliest'` and `'latest'`. If not specified, the default value `earliest` will be used.|
+|scan.startup.timestamp_millis|Optional. Specify the offset in milliseconds from a certain point of time.	|
 
-#### `ROW FORMAT` parameters
+#### Formats
 
 - `DEBEZIUM_JSON` — [Debezium](https://debezium.io) is a log-based CDC tool that can capture row changes from various database management systems such as PostgreSQL, MySQL, and SQL Server and generate events with consistent structures. Supported serialization format: JSON.
 - `MAXWELL` — [Maxwell](https://maxwells-daemon.io) is a log-based CDC tool that can capture row changes from MySQL and write them as JSON to Kafka.
