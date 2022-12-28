@@ -1,7 +1,7 @@
 ---
 id: risingwave-kubernetes
-title: Set up a local RisingWave cluster in Kubernetes
-description: Deploy RisingWave in a local Kubernetes cluster with the Kubernetes Operator for RisingWave.
+title: Set up a RisingWave cluster in Kubernetes
+description: Deploy RisingWave in a Kubernetes cluster with the Kubernetes Operator for RisingWave.
 slug: /risingwave-kubernetes
 ---
 
@@ -15,7 +15,7 @@ The Operator is a deployment and management system for RisingWave. It runs on to
 
     Ensure that the Kubernetes command-line tool [`kubectl`](https://kubernetes.io/docs/reference/kubectl/) is installed in your environment.
 
-* **[Install `psql`](https://www.postgresql.org/download/)**
+* **[Install `psql`](../guides/install-psql-without-full-postgres.md)**
 
     Ensure that the PostgreSQL interactive terminal [`psql`](https://www.postgresql.org/docs/current/app-psql.html) is installed in your environment.
 
@@ -26,6 +26,10 @@ The Operator is a deployment and management system for RisingWave. It runs on to
 
 
 ## Create a Kubernetes cluster
+
+:::info
+The steps in this section are intented for creating a Kubernetes cluster in your local environment.<br/>If you are using a managed Kubernetes service such as AKS, GKE, and EKS, refer to the corresponding documentation for instructions.
+:::
 
 **Steps:**
 
@@ -51,7 +55,6 @@ Before the deployment, ensure that the following requirements are satisfied.
 
 * Docker version ≥ 18.09
 * `kubectl` version ≥ 1.18
-* `kind` version ≥ 0.8.0
 * For Linux, set the value of the `sysctl` parameter [net.ipv4.ip_forward](https://linuxconfig.org/how-to-turn-on-off-ip-forwarding-in-linux) to 1.
 
 **Steps:**
@@ -99,7 +102,7 @@ RisingWave supports using Amazon S3 as the object storage.
 1. Create a Secret with the name ‘s3-credentials’.
 
     ```shell
-    kubectl create secret generic s3-credentials —from-literal AccessKeyID=${ACCESS_KEY} —from-literal SecretAccessKey=${SECRET_ACCESS_KEY} —from-literal Region=${AWS_REGION}
+    kubectl create secret generic s3-credentials --from-literal AccessKeyID=${ACCESS_KEY} --from-literal SecretAccessKey=${SECRET_ACCESS_KEY} --from-literal Region=${AWS_REGION}
     ```
 
 1. On the S3 console, [create a bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) with the name ‘hummock001’.
