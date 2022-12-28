@@ -21,18 +21,24 @@ You can ingest CDC data from MySQL in two ways:
   This connector is included in RisingWave. With this connector, RisingWave can connect to MySQL directly to obtain data from the binlog without starting additional services. Use this approach if Kafka is not part of your technical stack.
 
 - Using Debezium and Kafka
-  You can use the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html) to convert MySQL data changes to Kafka topics, and then use the Kafka connector in RisingWave to consume data from the Kafka topics. Us this approach is Kafka is part of your technical stack.
+  You can use the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html) to convert MySQL data change streams to Kafka topics, and then use the Kafka connector in RisingWave to consume data from the Kafka topics. Us this approach is Kafka is part of your technical stack.
 
 
-## Using the direct MySQL CDC connector
+## Using the native MySQL CDC connector
 
 ### Set up MySQL
 
-Before using the MySQL CDC connector, you need to complete several configurations on MySQL. For details, see [Setting up MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html#setting-up-mysql).
+Before using the native MySQL CDC connector in RisingWave, you need to complete several configurations on MySQL. For details, see [Setting up MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html#setting-up-mysql).
 
-### Create a materialized source connection using the CDC connector
+### Enable the connector node in RisingWave
 
-To ensure all data changes are captured, you must create a materialized source connection (`CREATE MATERIALIZED SOURCE`) and specify primary keys. The data format must be Debezium JSON or Maxwell JSON.
+The native MySQL CDC connector is implemented by a connector node. A connector node handles the connections with upstream and downstream systems, and it is currently only available in RiseDev, the developer tool of RisingWave.
+
+
+
+### Create a materialized source connection using the native CDC connector
+
+To ensure all data changes are captured, you must create a materialized source connection (`CREATE MATERIALIZED SOURCE`) and specify primary keys. The data format must be Debezium JSON.
 
 
 #### Syntax
@@ -43,10 +49,10 @@ CREATE MATERIALIZED SOURCE [ IF NOT EXISTS ] source_name (
    PRIMARY KEY ( column_name, ... )
 ) 
 WITH (
-   connector='cdc',
+   connector='mysql-cdc',
    <field>=<value>, ...
 ) 
-ROW FORMAT { DEBEZIUM_JSON | MAXWELL };
+ROW FORMAT DEBEZIUM_JSON;
 ```
 
 #### WITH parameters
@@ -55,18 +61,17 @@ All the fields listed below are required.
 
 |Field|Notes|
 |---|---|
-|database.hostname| Host name of the database. |
-|database.port| Port number of the database.|
-|database.user| User name of the database.|
-|database.password| Password of the database. |
+|hostname| Host name of the database. |
+|port| Port number of the database.|
+|username| User name of the database.|
+|password| Password of the database. |
 |database.name| Name of the database. |
 |table.name| Name of the table that you want to ingest data from. |
 |server.id| A numeric ID of the database client. It must be unique across all database processes that are running in the MySQL cluster.|
 
-#### Formats
+#### Data format
 
-- `DEBEZIUM_JSON` — [Debezium](https://debezium.io) is a log-based CDC tool that can capture row changes from various database management systems such as PostgreSQL, MySQL, and SQL Server and generate events with consistent structures. Supported serialization format: JSON.
-- `MAXWELL` — [Maxwell](https://maxwells-daemon.io) is a log-based CDC tool that can capture row changes from MySQL and write them as JSON to Kafka.
+`DEBEZIUM_JSON` — Data is in Debezium JSON format. [Debezium](https://debezium.io) is a log-based CDC tool that can capture row changes from various database management systems such as PostgreSQL, MySQL, and SQL Server and generate events with consistent structures in real time. The MySQL CDC connector in RisingWave supports JSON as the serialization format for Debezium data.
 
 
 #### Example
@@ -81,13 +86,14 @@ CREATE MATERIALIZED SOURCE orders (
    order_status SMALLINT,
    PRIMARY KEY (order_id)
 ) WITH (
- connector = 'cdc',
- database.hostname = '127.0.0.1',
- database.port = '3306',
- database.user = 'root',
- database.password = '123456',
+ connector = 'mysql-cdc',
+ hostname = '127.0.0.1',
+ port = '3306',
+ username = 'root',
+ password = '123456',
  database.name = 'mydb',
- table.name = 'orders'
+ table.name = 'orders',
+ server.id = '5454'
 ) ROW FORMAT DEBEZIUM_JSON;
 ```
 
@@ -130,18 +136,18 @@ ROW FORMAT { DEBEZIUM_JSON | MAXWELL };
 |scan.startup.mode|Optional. The Kafka consumer starts consuming data from the commit offset. This includes two values: `'earliest'` and `'latest'`. If not specified, the default value `earliest` will be used.|
 |scan.startup.timestamp_millis|Optional. Specify the offset in milliseconds from a certain point of time.	|
 
-#### Formats
+#### Data formats
 
-- `DEBEZIUM_JSON` — [Debezium](https://debezium.io) is a log-based CDC tool that can capture row changes from various database management systems such as PostgreSQL, MySQL, and SQL Server and generate events with consistent structures. Supported serialization format: JSON.
-- `MAXWELL` — [Maxwell](https://maxwells-daemon.io) is a log-based CDC tool that can capture row changes from MySQL and write them as JSON to Kafka.
+- `DEBEZIUM_JSON` — Data is in Debezium JSON format. [Debezium](https://debezium.io) is a log-based CDC tool that can capture row changes from various database management systems such as PostgreSQL, MySQL, and SQL Server and generate events with consistent structures. The Kafka connector in RisingWave supports JSON as the serialization format for Debezium data.
+- `MAXWELL` — Data is in Maxwell JSON format. [Maxwell](https://maxwells-daemon.io) is a log-based CDC tool that can capture row changes from MySQL and write them as JSON to Kafka.
 
 
 #### Example
 
 ```sql
 CREATE MATERIALIZED SOURCE source_name (
-   column1 varchar,
-   column2 integer,
+   column1 VARCHAR,
+   column2 INTEGER,
    PRIMARY KEY (column1)
 ) 
 WITH (
