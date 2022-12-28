@@ -9,9 +9,9 @@ Change Data Capture (CDC) refers to the process of identifying and capturing dat
 
 RisingWave supports ingesting row-level data (`INSERT`, `UPDATE`, and `DELETE` operations) from the changes of a MySQL database.
 
-::: note
+:::note
 
-The supported MySQL version are 5.7 and 8.0.x.
+The supported MySQL versions are 5.7 and 8.0.x.
 
 :::
 
@@ -21,7 +21,7 @@ You can ingest CDC data from MySQL in two ways:
   This connector is included in RisingWave. With this connector, RisingWave can connect to MySQL directly to obtain data from the binlog without starting additional services. Use this approach if Kafka is not part of your technical stack.
 
 - Using Debezium and Kafka
-  You can use the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html) to convert MySQL data change streams to Kafka topics, and then use the Kafka connector in RisingWave to consume data from the Kafka topics. Us this approach is Kafka is part of your technical stack.
+  You can use the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html) to convert MySQL data change streams to Kafka topics, and then use the Kafka connector in RisingWave to consume data from the Kafka topics. Us this approach if Kafka is part of your technical stack.
 
 
 ## Using the native MySQL CDC connector
@@ -32,7 +32,7 @@ Before using the native MySQL CDC connector in RisingWave, you need to complete 
 
 ### Enable the connector node in RisingWave
 
-The native MySQL CDC connector is implemented by a connector node. A connector node handles the connections with upstream and downstream systems, and it is currently only available in RiseDev, the developer tool of RisingWave.
+The native MySQL CDC connector is implemented by a connector node. A connector node handles the connections with upstream and downstream systems, and it is currently only available in RiseDev, the developer tool of RisingWave. 
 
 
 
