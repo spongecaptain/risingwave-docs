@@ -18,10 +18,10 @@ The supported MySQL versions are 5.7 and 8.0.x.
 You can ingest CDC data from MySQL in two ways:
 
 - Using the direct MySQL CDC connector
-  This connector is included in RisingWave. With this connector, RisingWave can connect to MySQL directly to obtain data from the binlog without starting additional services. Use this approach if Kafka is not part of your technical stack.
+  This connector is included in RisingWave. With this connector, RisingWave can connect to MySQL directly to obtain data from the binlog without starting additional services.
 
-- Using Debezium and Kafka
-  You can use the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html) to convert MySQL data change streams to Kafka topics, and then use the Kafka connector in RisingWave to consume data from the Kafka topics. Us this approach if Kafka is part of your technical stack.
+- Using a CDC tool and the Kafka connector
+  You can use either the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html) or [Maxwell's daemon](https://maxwells-daemon.io/) to convert MySQL data change streams to Kafka topics, and then use the Kafka connector in RisingWave to consume data from the Kafka topics.
 
 
 ## Using the native MySQL CDC connector
@@ -97,52 +97,22 @@ CREATE MATERIALIZED SOURCE orders (
 ) ROW FORMAT DEBEZIUM_JSON;
 ```
 
-## Debezium and Kafka
+## Use a CDC tool and the Kafka connector
 
-### Set up MySQL
+### Use the Debezium connector for MySQL
+
+#### Set up MySQL
 
 Before using the Debezium connector for MySQL, you need to complete several configurations on MySQL. For details, see [Setting up MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html#setting-up-mysql).
 
-### Deploy the Debezium connector for MySQL
+#### Deploy the Debezium connector for MySQL
 
 You need to download and configure the [Debezium connector for MySQL](https://debezium.io/documentation/reference/stable/connectors/mysql.html), and then add the configuration to your Kafka Connect cluster. For details, see [Deploying the MySQL connector](https://debezium.io/documentation/reference/stable/connectors/mysql.html#mysql-deploying-a-connector).
 
-### Create a materialized source connection using the Kafka connector
+#### Create a materialized source connection using the Kafka connector
 
-To ensure all data changes are captured, you must create a materialized source connection (`CREATE MATERIALIZED SOURCE`) and specify primary keys. The data format must be Debezium JSON or Maxwell JSON.
+To ensure all data changes are captured, you must create a materialized source connection (`CREATE MATERIALIZED SOURCE`) and specify primary keys. The data format must be Debezium JSON.
 
-#### Syntax
-
-```sql
-CREATE MATERIALIZED SOURCE [ IF NOT EXISTS ] source_name (
-   column_name data_type [ PRIMARY KEY ], ...
-   PRIMARY KEY ( column_name, ... )
-) 
-WITH (
-   connector='kafka',
-   <field>=<value>, ...
-) 
-ROW FORMAT { DEBEZIUM_JSON | MAXWELL };
-```
-
-
-#### WITH parameters
-
-|Field|	Notes|
-|---|---|
-|topic| Required. Address of the Kafka topic. One source can only correspond to one topic.|
-|properties.bootstrap.server|Required. Address of the Kafka broker. Format: `'ip:port,ip:port'`.	|
-|properties.group.id	|Required. Name of the Kafka consumer group.	|
-|scan.startup.mode|Optional. The Kafka consumer starts consuming data from the commit offset. This includes two values: `'earliest'` and `'latest'`. If not specified, the default value `earliest` will be used.|
-|scan.startup.timestamp_millis|Optional. Specify the offset in milliseconds from a certain point of time.	|
-
-#### Data formats
-
-- `DEBEZIUM_JSON` — Data is in Debezium JSON format. [Debezium](https://debezium.io) is a log-based CDC tool that can capture row changes from various database management systems such as PostgreSQL, MySQL, and SQL Server and generate events with consistent structures. The Kafka connector in RisingWave supports JSON as the serialization format for Debezium data.
-- `MAXWELL` — Data is in Maxwell JSON format. [Maxwell](https://maxwells-daemon.io) is a log-based CDC tool that can capture row changes from MySQL and write them as JSON to Kafka.
-
-
-#### Example
 
 ```sql
 CREATE MATERIALIZED SOURCE source_name (
@@ -158,4 +128,31 @@ WITH (
    properties.group.id='demo_consumer_name'
 ) 
 ROW FORMAT DEBEZIUM_JSON;
+```
+
+### Use the Maxwell's daemon
+
+#### Configure MySQL and run Maxwell's daemon
+
+You need to configure MySQL and run Maxwell's daemon to convert data changes to Kafka topics. For details, see the [Quick Start](https://maxwells-daemon.io/quickstart/) from Maxwell's Daemon.
+
+#### Create a materialized source connection using the Kafka connector
+
+To ensure all data changes are captured, you must create a materialized source connection (`CREATE MATERIALIZED SOURCE`) and specify primary keys. The data format must be Maxwell JSON.
+
+
+```sql
+CREATE MATERIALIZED SOURCE source_name (
+   column1 VARCHAR,
+   column2 INTEGER,
+   PRIMARY KEY (column1)
+) 
+WITH (
+   connector='kafka',
+   topic='user_test_topic',
+   properties.bootstrap.server='172.10.1.1:9090,172.10.1.2:9090',
+   scan.startup.mode='earliest',
+   properties.group.id='demo_consumer_name'
+) 
+ROW FORMAT MAXWELL;
 ```
