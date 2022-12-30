@@ -6,7 +6,7 @@ slug: /sql-create-sink
 
 ---
 
-Use the `CREATE SINK` command to create a sink. A sink is a connection to a stream that RisingWave can send data to. 
+Use the `CREATE SINK` command to create a sink. A sink is a target that RisingWave can send data to. 
 
 You can create a sink from a materialized source, a materialized view, a table, or a `SELECT` query.
 
