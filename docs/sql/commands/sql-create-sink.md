@@ -27,10 +27,10 @@ WITH (
 ## Parameters
 
 
-|Parameter | Description|
+|Parameter or clause| Description|
 |---|---|
 |sink_name| Name of the sink to be created. Required.|
-|FROM sink_from clause| The direct source from which data will be output. It can be a materialized source, a materialized view, or a table. Either this clause or the AS SELECT statement must be specified.|
+|FROM sink_from clause| A clause that specifies the direct source from which data will be output. *sink_from* can be a materialized source, a materialized view, or a table. Either this clause or a SELECT query must be specified.|
 |AS select_query| A SELECT query that specifies the data to be output to the sink. Either this query or a FROM clause must be specified.|
 |connector| Sink connector type. Currently, only `‘kafka’` is supported.|
 |kafka.brokers|Address of the Kafka broker. Format: `‘ip:port’`. If there are multiple brokers, separate them with commas. |
