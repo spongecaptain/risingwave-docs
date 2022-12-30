@@ -54,7 +54,7 @@ CREATE SINK sink2 AS SELECT
 avg(distance) as avg_distance, avg(duration) as avg_duration 
 FROM taxi_trips
 WITH (
-     connector='kafka',
+   connector='kafka',
    kafka.brokers='localhost:9092',
    kafka.topic='test',
    format='append-only'
