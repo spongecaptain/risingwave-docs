@@ -145,7 +145,7 @@ const sidebars = {
         {
           type: 'doc',
           label: 'Overview',
-          id: 'ingestion-overview',
+          id: 'data-ingestion',
         },
         {
           type: 'doc',
@@ -171,6 +171,11 @@ const sidebars = {
           type: 'doc',
           label: 'Pulsar',
           id: 'create-source/create-source-pulsar',
+        },
+        {
+          type: 'doc',
+          label: 'Astra Streaming',
+          id: 'guides/connector-astra-streaming',
         },
         {
           type: 'doc',
