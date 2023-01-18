@@ -6,23 +6,21 @@ title: GROUP BY clause
 
 The `GROUP BY` clause groups rows in a table with identical data, thus eliminating redundancy in the output and aggregates that apply to these groups.
 
-If the `GROUP BY` clause is specified, the query is always an aggregate query, even if no aggregations are present in the SELECT clause.
+Additionally, all tuples with matching data in the grouping columns (i.e., all tuples that belong to the same group) will be combined. The values of the grouping columns are unchanged, and any other columns can be combined using an aggregate function (such as `COUNT`, `SUM`, `AVG`, etc.).
 
-Additionally, all tuples with matching data in the grouping columns (i.e., all tuples that belong to the same group) will be combined. The values of the grouping columns are unchanged, and any other columns can be combined using an aggregate function (such as COUNT, SUM, AVG, etc.).
-
-The `GROUP BY` clause follows the WHERE clause in a SELECT statement and can precede the optional ORDER BY clause.
+The `GROUP BY` clause follows the `WHERE` clause in a `SELECT` statement and can precede the optional `ORDER BY` clause.
 
 Here is the basic syntax of the `GROUP BY` clause:
 
 ```sql
-SELECT column-list
+SELECT column_list
 FROM table_name
 WHERE [ conditions ]
 GROUP BY column1, column2....columnN
 ORDER BY column1, column2....columnN
 ```
 
-You can use more than one column in the `GROUP BY` clause. However, you must ensure the column you use to group is available in the column-list.
+You can use more than one column in the `GROUP BY` clause.
 
 
 Basic `GROUP BY` example:
@@ -44,10 +42,9 @@ Suppose that we have a table,`sales_commissions`, that consists of these columns
 | 10 | James |  45 |   5000            |
 
 
-To obtain the total amount of sales commissions for each person, we could use the following  `GROUP BY` query using the optional ORDER BY clause:
+To obtain the total amount of sales commissions for each person, we could use the following `GROUP BY` query using the optional `ORDER BY` clause:
 
 ```sql
--- create a CTE called "cte" and use it in the main query
 SELECT name, SUM(commission_amount)
 FROM sales_commissions
 GROUP BY name 

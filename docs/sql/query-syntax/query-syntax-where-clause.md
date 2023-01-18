@@ -4,7 +4,7 @@ slug: /query-syntax-where-clause
 title: WHERE clause
 ---
 
-The `WHERE` clause specifies any conditions or filters to apply to your data. This allows you to select only a specific subset of the data. Logically the `WHERE` clause is used right after the `FROM` clause.
+The `WHERE` clause specifies any conditions or filters to apply to your data. This allows you to select only a specific subset of the data. The `WHERE` clause is used right after the `FROM` clause.
 
 Here is the basic syntax of a SELECT statement with the optional `WHERE` clause:
 

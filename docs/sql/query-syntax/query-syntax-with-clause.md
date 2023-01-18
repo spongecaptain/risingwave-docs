@@ -8,7 +8,7 @@ The `WITH` clause provides a way to write supplemental statements for a larger q
 
 It helps break down complicated and large queries into simpler, easily readable forms and proves especially useful when the subquery is executed multiple times. It computes the aggregation once and can then be repeatedly referenced by its name in the queries.
 
-Regular (non-recursive) common-table expressions are views limited in scope to a particular query. CTEs can reference each other and can be nested. The `WITH` clause must be defined before it's used in the query.
+CTEs can reference each other and can be nested. The `WITH` clause must be defined before it's used in the query.
 
 
 Basic CTE examples:

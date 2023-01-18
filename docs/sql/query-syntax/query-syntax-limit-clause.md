@@ -6,7 +6,7 @@ title: LIMIT clause
 
 `LIMIT` is an output modifier. Logically it is applied at the end of the query, and the `LIMIT` clause restricts the number of rows fetched.
 
-Note that while `LIMIT` can be used without an ORDER BY clause, the results might not be deterministic without the `ORDER BY` clause. This can still be useful, for example, when you want to inspect a quick snapshot of the data.
+Note that while `LIMIT` can be used without an `ORDER BY` clause, the results might not be deterministic without the `ORDER BY` clause. This can still be useful, for example, when you want to inspect a quick snapshot of the data.
 
 Example:
 
