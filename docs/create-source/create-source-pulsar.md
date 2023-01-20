@@ -1,12 +1,12 @@
 ---
 id: create-source-pulsar
-title: Ingest data from Pursar
-description: Connect RisingWave to a Pulsa broker.
+title: Ingest data from Pulsar
+description: Connect RisingWave to a Pulsar broker.
 slug: /create-source-pulsar
 ---
 
 
-Use the SQL statement below to connect RisingWave to a Pulsa broker.
+Use the SQL statement below to connect RisingWave to a Pulsar broker.
 
 ## Syntax
 
@@ -75,7 +75,7 @@ import TabItem from '@theme/TabItem';
 <TabItem value="avro" label="Avro" default>
 
 ```sql
-CREATE MATERIALIZED SOURCE IF NOT EXISTS source_abc 
+CREATE SOURCE IF NOT EXISTS source_name 
 WITH (
    connector='pulsar',
    topic='demo_topic',
@@ -91,7 +91,7 @@ ROW SCHEMA LOCATION 'https://demo_bucket_name.s3-us-west-2.amazonaws.com/demo.av
 <TabItem value="json" label="JSON" default>
 
 ```sql
-CREATE MATERIALIZED SOURCE IF NOT EXISTS source_abc (
+CREATE SOURCE IF NOT EXISTS source_name (
    column1 string,
    column2 integer,
 )
@@ -109,7 +109,7 @@ ROW FORMAT JSON;
 <TabItem value="pb" label="Protobuf" default>
 
 ```sql
-CREATE MATERIALIZED SOURCE IF NOT EXISTS source_abc (
+CREATE SOURCE IF NOT EXISTS source_name (
    column1 string,
    column2 integer,
 )

@@ -22,7 +22,7 @@ The supported CDC data formats are [Debezium](https://debezium.io) JSON (for bot
 ## Syntax
 
 ```sql
-CREATE MATERIALIZED SOURCE [ IF NOT EXISTS ] source_name (
+CREATE TABLE [ IF NOT EXISTS ] table_name (
    column_name data_type [ PRIMARY KEY ], ...
    PRIMARY KEY ( column_name, ... )
 ) 
@@ -49,7 +49,7 @@ ROW FORMAT { DEBEZIUM_JSON | MAXWELL };
 Here is an example of creating a materialized source using the Kafka connector to consume data from Kafka topics.
 
 ```sql
-CREATE MATERIALIZED SOURCE [IF NOT EXISTS] source_name (
+CREATE TABLE [IF NOT EXISTS] table_name (
    column1 varchar,
    column2 integer,
    PRIMARY KEY (column1)
