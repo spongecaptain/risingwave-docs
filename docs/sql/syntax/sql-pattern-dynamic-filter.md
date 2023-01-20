@@ -53,7 +53,7 @@ SELECT t1.* FROM t1
 WHERE t1.k > (select MAX(erase_ts) from t_erase_ts)
 ```
 
-Then, Dynamic Filter will be adopted to run this streaming query:
+Then, dynamic filter will be adopted to run this streaming query:
 
 ```
  StreamMaterialize { columns: [k, value], pk_columns: [k] }
