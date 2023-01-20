@@ -248,6 +248,11 @@ const sidebars = {
             [
               {
                 type: 'doc',
+                id: 'sql/syntax/sql-pattern-dynamic-filter',
+                label: 'Dynamic filter'
+              },
+              {
+                type: 'doc',
                 id: 'sql/syntax/sql-pattern-topn',
                 label: 'Top-N by group'
               }
