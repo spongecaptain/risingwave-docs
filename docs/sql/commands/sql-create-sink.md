@@ -30,8 +30,8 @@ WITH (
 |Parameter or clause| Description|
 |---|---|
 |sink_name| Name of the sink to be created. Required.|
-|FROM sink_from clause| A clause that specifies the direct source from which data will be output. *sink_from* can be a materialized source, a materialized view, or a table. Either this clause or a SELECT query must be specified.|
-|AS select_query| A SELECT query that specifies the data to be output to the sink. Either this query or a FROM clause must be specified.|
+|FROM sink_from clause| A clause that specifies the direct source from which data will be output. *sink_from* can be a materialized view or a table. Either this clause or a SELECT query must be specified.|
+|AS select_query| A SELECT query that specifies the data to be output to the sink. Either this query or a FROM clause must be specified.See [SELECT](../commands/sql-select.md) for the syntax and examples of the SELECT command.|
 |connector| Sink connector type. Currently, only `‘kafka’` is supported.|
 |kafka.brokers|Address of the Kafka broker. Format: `‘ip:port’`. If there are multiple brokers, separate them with commas. |
 |kafka.topic|Address of the Kafka topic. One sink can only correspond to one topic.|
@@ -39,6 +39,7 @@ WITH (
 
 ## Examples
 
+Create a sink by selecting an entire materialized view.
 ```sql
 CREATE SINK sink1 FROM mv1 
 WITH (
@@ -47,6 +48,18 @@ WITH (
    kafka.topic='test',
    format='append-only'
 )
+```
+
+Create a sink by selecting the average `distance` and `duration` from `taxi_trips`.
+
+The schema of `taxi_trips` is like this:
+```sql
+{
+  "id": VARCHAR,
+  "distance": DOUBLE PRECISION,
+  "duration": DOUBLE PRECISION,
+  "fare": DOUBLE PRECISION
+}
 ```
 
 ```sql
